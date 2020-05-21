@@ -24,13 +24,13 @@ public class EmailSenderRpcClient {
     
     private static final String QUEUE = "MAILER_EMAIL";
 
-    @Value("${ampq.server}")
+    @Value("${amqp.server}")
     private String server;
 
-    @Value("${ampq.user}")
+    @Value("${amqp.user}")
     private String user;
 
-    @Value("${ampq.password}")
+    @Value("${amqp.password}")
     private String password;
 
     public Object exchange(EmailRequest req) {
