@@ -12,3 +12,7 @@ spring:
         password: 11
         initialization-mode: always
         continue-on-error: true
+amqp:
+    server: localhost
+    user: guest
+    password: guest

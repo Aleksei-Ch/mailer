@@ -1,0 +1,17 @@
+{"properties": [
+  {
+    "name": "amqp.server",
+    "type": "java.lang.String",
+    "description": "AMQP server address"
+  },
+  {
+    "name": "amqp.user",
+    "type": "java.lang.String",
+    "description": "AMQP server user name"
+  },
+  {
+    "name": "amqp.password",
+    "type": "java.lang.String",
+    "description": "AMQP server user password"
+  }
+]}
