@@ -1,0 +1,14 @@
+spring:
+    jpa:
+        properties:
+            hibernate:
+                dialect: org.hibernate.dialect.PostgreSQLDialect
+        hibernate:
+            ddl-auto: update
+    datasource:
+        driver-class-name: org.postgresql.Driver
+        url: jdbc:postgresql://localhost:5432/postgres
+        username: postgres
+        password: 11
+        initialization-mode: always
+        continue-on-error: true
