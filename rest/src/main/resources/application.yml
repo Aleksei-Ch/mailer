@@ -12,7 +12,9 @@ spring:
         password: 11
         initialization-mode: always
         continue-on-error: true
+        hikari:
+            maximum-pool-size: 2 
 amqp:
     server: localhost
-    user: guest
-    password: guest
+    user: mailer
+    password: mailer
