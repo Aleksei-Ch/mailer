@@ -24,8 +24,12 @@ hs_err_pid*
 
 # bin folders
 rest/bin/
+rest/build/
+mailer/bin/
+mailer/build/
 
 # Project files
 .vscode/
 rest/.*
+mailer/.*
 

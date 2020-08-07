@@ -18,3 +18,4 @@ amqp:
     server: localhost
     user: mailer
     password: mailer
+    email_queue: MAILER_EMAIL

@@ -28,7 +28,7 @@ public class EmailController {
     @RequestMapping("/send")
     public GlobalResponse send(@Valid @RequestBody EmailRequest req) throws Exception {
 
-        GlobalResponse response = null;
+        var response = GlobalResponse.builder();
 
         try {
 
@@ -41,16 +41,43 @@ public class EmailController {
             // Send
             var result = rpcClient.exchange(req);
 
-            response = GlobalResponse.builder().payload(result).build();
+            response.payload(result);
 
         } catch (Exception e) {
             LOG.error("An exception occurred: ", e);
-            response = GlobalResponse.builder()
-                .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .errors(List.of(e.getMessage()))
-                .build();
+            response.status(HttpStatus.INTERNAL_SERVER_ERROR).errors(List.of(e.getMessage()));
         }
-        return response;
+        return response.build();
+    }
+
+    @RequestMapping("/sendAsync")
+    public GlobalResponse sendAsync(@Valid @RequestBody EmailRequest req) throws Exception {
+
+        var response = GlobalResponse.builder();
+
+        try {
+
+            // Prepare
+            req.setFrom(req.getFrom().replaceAll(",", ";"));
+            req.setTo(req.getTo().replaceAll(",", ";"));
+            if (req.getCc() != null) req.setCc(req.getCc().replaceAll(",", ";"));
+            if (req.getBcc() != null) req.setBcc(req.getBcc().replaceAll(",", ";"));
+
+            // Send
+            new Thread(() -> {
+                try {
+                    var result = rpcClient.exchange(req);
+                    LOG.info("Sending result: " + result);
+                } catch (Exception e) {
+                    LOG.error("An exception occurred : ", e);
+                }
+            }).start();
+
+        } catch (Exception e) {
+            LOG.error("An exception occurred: ", e);
+            response.status(HttpStatus.INTERNAL_SERVER_ERROR).errors(List.of(e.getMessage()));
+        }
+        return response.build();
     }
 
 }

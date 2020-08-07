@@ -13,5 +13,10 @@
     "name": "amqp.password",
     "type": "java.lang.String",
     "description": "AMQP server user password"
+  },
+  {
+    "name": "amqp.email_queue",
+    "type": "java.lang.String",
+    "description": "Queue name for emails"
   }
 ]}

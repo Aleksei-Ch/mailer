@@ -1,4 +1,4 @@
-package io.mailer.rest.model.validator;
+package io.mailer.mailer.model.validator;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;

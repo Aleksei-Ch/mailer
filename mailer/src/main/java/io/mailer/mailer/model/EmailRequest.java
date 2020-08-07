@@ -1,10 +1,10 @@
-package io.mailer.rest.model;
+package io.mailer.mailer.model;
 
 import java.util.Map;
 
 import javax.validation.constraints.NotBlank;
 
-import io.mailer.rest.model.validator.EmailList;
+import io.mailer.mailer.model.validator.EmailList;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

@@ -1,12 +1,6 @@
 package io.mailer.rest.rpc;
 
-import org.hibernate.mapping.Map;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
-
-import java.nio.charset.StandardCharsets;
+import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
@@ -14,6 +8,11 @@ import java.util.concurrent.BlockingQueue;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rabbitmq.client.AMQP;
 import com.rabbitmq.client.ConnectionFactory;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 import io.mailer.rest.model.EmailRequest;
 
@@ -23,13 +22,13 @@ public class EmailSenderRpcClient {
     private static final ObjectMapper mapper = new ObjectMapper();
     private static final Logger LOG = LoggerFactory.getLogger(EmailSenderRpcClient.class);
     private final ConnectionFactory factory;
+    private final String queue;
     
-    private static final String QUEUE = "MAILER_EMAIL";
-
     public EmailSenderRpcClient(
             @Value("${amqp.server}") String server,
             @Value("${amqp.user}") String user,
-            @Value("${amqp.password}") String password
+            @Value("${amqp.password}") String password,
+            @Value("${amqp.email_queue}") String queue
             ) throws Exception {
                 
         factory = new ConnectionFactory();
@@ -37,11 +36,13 @@ public class EmailSenderRpcClient {
         factory.setUsername(user);
         factory.setPassword(password);
 
+        this.queue = queue;
+
         try (var conn = factory.newConnection();
             var channel = conn.createChannel()) {
 
             // Declare the queue if it is not declared yet
-            channel.queueDeclare(QUEUE, true, false, false, null);
+            channel.queueDeclare(queue, true, false, false, null);
 
         } catch (Exception e) {
             LOG.error("Can not initialize EmailSenderRpcClient: ", e);
@@ -51,7 +52,7 @@ public class EmailSenderRpcClient {
 
     public Object exchange(EmailRequest req) {
 
-        Object result = null;
+       Object result = null;
 
         try (var conn = factory.newConnection();
             var channel = conn.createChannel()) {
@@ -65,16 +66,16 @@ public class EmailSenderRpcClient {
 
             channel.basicPublish(
                 "", 
-                QUEUE, 
+                queue, 
                 props, 
-                mapper.writeValueAsString(req).getBytes(StandardCharsets.UTF_8)
+                mapper.writeValueAsBytes(req)
             );
 
-            final BlockingQueue<String> resp = new ArrayBlockingQueue<>(1);
+            final BlockingQueue<byte[]> resp = new ArrayBlockingQueue<>(1);
 
             var ctag = channel.basicConsume(replyTo, true, (consumerTag, delivery) -> {
                 if (delivery.getProperties().getCorrelationId().equals(correlationId)) {
-                    resp.offer(new String(delivery.getBody(), StandardCharsets.UTF_8));
+                    resp.offer(delivery.getBody());
                 }
             }, consumerTag -> {});
 
