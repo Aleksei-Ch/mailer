@@ -6,7 +6,10 @@ import org.springframework.ws.client.core.support.WebServiceGatewaySupport;
 import org.springframework.ws.soap.client.core.SoapActionCallback;
 import ru.mailserver.model.SmsRequest;
 
+import javax.xml.datatype.DatatypeFactory;
 import java.time.Instant;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 public class DevinoSmsSender extends WebServiceGatewaySupport implements SmsSender {
 
@@ -41,7 +44,7 @@ public class DevinoSmsSender extends WebServiceGatewaySupport implements SmsSend
         smsReq.setSourceAddress(from);
         smsReq.setDestinationAddress(req.getTo());
         smsReq.setData(req.getBody());
-        smsReq.setSendDate(Instant.now());
+        smsReq.setSendDate(DatatypeFactory.newInstance().newXMLGregorianCalendar(new GregorianCalendar()));
         smsReq.setValidity(1);
 
         var smsResp = (SendMessageByTimeZoneResponse) getWebServiceTemplate().marshalSendAndReceive(smsReq,

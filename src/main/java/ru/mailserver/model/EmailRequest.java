@@ -14,7 +14,6 @@ import java.util.Map;
 public class EmailRequest {
 
     @NotBlank(message = "Parameter 'from' can not be blank")
-    @EmailList(message = "Incorrect email list in 'from' parameter. Use list of emails separated by ; or ,")
     private String from;
 
     @NotBlank(message = "Parameter 'to' can not be blank")

@@ -8,14 +8,8 @@
 
 package com.devinotele.smsservice;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlSchemaType;
-import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.*;
 import javax.xml.datatype.XMLGregorianCalendar;
-import java.time.Instant;
 
 
 /**
@@ -60,7 +54,7 @@ public class SendMessageByTimeZone {
     protected String data;
     @XmlElement(required = true)
     @XmlSchemaType(name = "dateTime")
-    protected Instant sendDate;
+    protected XMLGregorianCalendar sendDate;
     @XmlElement(required = true, type = Integer.class, nillable = true)
     protected Integer validity;
 
@@ -168,7 +162,7 @@ public class SendMessageByTimeZone {
      *     {@link XMLGregorianCalendar }
      *     
      */
-    public Instant getSendDate() {
+    public XMLGregorianCalendar getSendDate() {
         return sendDate;
     }
 
@@ -180,7 +174,7 @@ public class SendMessageByTimeZone {
      *     {@link XMLGregorianCalendar }
      *     
      */
-    public void setSendDate(Instant value) {
+    public void setSendDate(XMLGregorianCalendar value) {
         this.sendDate = value;
     }
 

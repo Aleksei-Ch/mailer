@@ -133,7 +133,6 @@ public class RestApiController {
     })
     @RequestMapping(value = "/status/{id}", method = RequestMethod.GET)
     public GlobalResponse getSmsStatus(@PathVariable String id) {
-        LOG.info(id);
 
         var response = GlobalResponse.builder();
 
