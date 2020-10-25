@@ -1,0 +1,25 @@
+server:
+  port: 8082
+authfile: .\auth.csv
+spring:
+  mail:
+    host: smtp.host
+    port: 587
+    username: uname
+    password: pass
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+log:
+  level: INFO
+sms:
+  user: uname
+  password: pass
+  from: uname2
+proxy:
+  set: false
+  host: localhost
+  port: 3127

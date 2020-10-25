@@ -5,12 +5,12 @@ A tool for sending messages over REST API
 ## Requirements
 
 JRE >= 11
-RabbitMQ
-PostgreSQL >= 9.5
 
-## Docker commands for RabbitMQ and PostgreSQL
+## SMS sending
 
-### Just for development and testing purposes
+In this case used devinotele.com. Implement your own 'SmsSender'
 
-docker run -d --hostname my-rabbit --name some-rabbit -p 5672:5672 -p 15672:15672 rabbitmq:3-management
-docker run -d -e POSTGRES_PASSWORD=11 -p 5432:5432 postgres
+## SOAP client generating
+
+Uncomment 'maven-jaxb2-plugin' in pom.xml and run jaxb2 maven plugin
+Copy new client classes to src from target/generated-sources/jaxb
